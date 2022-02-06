@@ -10,16 +10,9 @@ import com.example.exemplar.client.spotify.Item
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = SearchViewModel()) {
     val results by viewModel.albums.observeAsState(listOf())
-    var query by remember { mutableStateOf("") }
+    val query by viewModel.query.observeAsState("")
 
-    SearchContent(query = query, items = results) { q: String ->
-        query = if(q.endsWith("\n")) {
-            viewModel.search(q.trim())
-            q.trim()
-        } else {
-            q
-        }
-    }
+    SearchContent(query = query, items = results, onSearch = viewModel::onQueryChange)
 }
 
 @Composable
