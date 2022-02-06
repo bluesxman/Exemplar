@@ -1,14 +1,25 @@
 package com.example.exemplar.ui.search
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Card
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import com.example.exemplar.client.spotify.Item
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.exemplar.R
+import com.example.exemplar.client.spotify.Item
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = SearchViewModel()) {
@@ -41,10 +52,21 @@ fun SearchFieldContent(query: String, onSearch: (String) -> Unit) {
 
 @Composable
 fun SearchResultsContent(items: List<Item>) {
-
+    LazyColumn(
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        items(items.size) { index ->
+            SearchItemContent(item = items[index])
+        }
+    }
 }
 
 @Composable
 fun SearchItemContent(item: Item) {
-
+    Card {
+        Text(item.name, fontSize = 30.sp)
+    }
 }
