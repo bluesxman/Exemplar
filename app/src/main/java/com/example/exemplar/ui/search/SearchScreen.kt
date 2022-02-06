@@ -3,9 +3,12 @@ package com.example.exemplar.ui.search
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.res.colorResource
 import com.example.exemplar.client.spotify.Item
+import com.example.exemplar.R
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = SearchViewModel()) {
@@ -28,7 +31,11 @@ fun SearchFieldContent(query: String, onSearch: (String) -> Unit) {
     OutlinedTextField(
         value = query,
         onValueChange = onSearch,
-        label = { Text("Search albums") }
+        label = { Text("Search albums") },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = colorResource(R.color.purple_500),
+            unfocusedBorderColor = colorResource(R.color.purple_200)
+        )
     )
 }
 
