@@ -1,8 +1,14 @@
 package com.example.exemplar.client.spotify
 
-val clientId: String
-    get() = System.getenv()["CLIENT_ID"]!!
+import com.example.exemplar.BuildConfig
 
-val clientSecret: String
-    get() = System.getenv()["CLIENT_SECRET"]!!
+//val clientId: String
+//    get() = System.getenv()["CLIENT_ID"]!!
+//
+//val clientSecret: String
+//    get() = System.getenv()["CLIENT_SECRET"]!!
+
+const val clientId = BuildConfig.CLIENT_ID
+
+const val clientSecret = BuildConfig.CLIENT_SECRET
 
