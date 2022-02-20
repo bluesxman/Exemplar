@@ -3,26 +3,32 @@ package com.example.exemplar.ui.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.exemplar.client.spotify.Item
-import com.example.exemplar.client.spotify.searchAlbums
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 
 class SearchViewModel(): ViewModel() {
-    val albums = MutableLiveData<List<Item>>(listOf())
-    val query = MutableLiveData("")
+    val query = MutableLiveData("moon")
+    var albums: Flow<PagingData<Item>> = initPager()
+
     // TODO: add showSpinner as a state that the screen will observe
 
-    fun search(query: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = searchAlbums(query)
-            albums.postValue(response.albums.items)
-        }
+    private fun initPager(): Flow<PagingData<Item>> {
+        val q = query.value?.trim() ?: ""
+        return Pager(PagingConfig(pageSize = 20)) {
+            ItemSource(q)
+        }.flow.cachedIn(viewModelScope)
     }
 
     fun onQueryChange(q: String) {
+        if (q.isNotBlank()) {
+            query.value = q.trim()
+        }
         query.value = if(q.endsWith("\n")) {
-            search(q.trim())
+            initPager()
             q.trim()
         } else {
             q

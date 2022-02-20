@@ -59,3 +59,7 @@ suspend fun searchAlbums(query: String): SearchResponse {
         parameter("include_external", "audio")
     }
 }
+
+suspend fun moreResults(next: String): SearchResponse {
+    return client.get(next)
+}
